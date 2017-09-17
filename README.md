@@ -13,7 +13,7 @@
 
 Video:
 
-[![asciicast](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC.png)](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC)
+[![asciicast](https://asciinema.org/a/o3TGQ8U09nv5NnwhWp5WkLGxc.png)](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC)
 
 Text:
 
