@@ -6,8 +6,10 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-16.04"
   config.vm.define "master", primary: true  do |master|
     master.vm.network "private_network", ip: "10.1.0.4"
+    master.vm.hostname = "master"
   end
   config.vm.define "node0" do |node0|
     node0.vm.network "private_network", ip: "10.1.0.254"
+    node0.vm.hostname = "node0"
   end
 end
