@@ -15,10 +15,10 @@ Video:
 
 [![asciicast](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC.png)](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC)
 
-* Clone this project: `git clone
-  git@github.com:faraazkhan/iacc-docker-class.git`
+Text:
 
 ```
+git clone git@github.com:faraazkhan/iacc-docker-class.git
 cd iacc-docker-class
 vagrant up
 ```
