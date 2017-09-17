@@ -60,3 +60,12 @@ curl https://raw.githubusercontent.com/faraazkhan/iacc-docker-class/master/provi
 Log out of the VM, and log back in, then verify your installation with:
 
 `docker run hello-world`
+
+# Update
+If you have run a previous version of this repo and would like to
+upgrade (including getting latest from the repo), simply run:
+
+```
+cd iacc-docker-class
+./update.sh
+```
