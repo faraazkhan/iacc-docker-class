@@ -4,6 +4,10 @@
 Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "provision.sh"
   config.vm.box = "bento/ubuntu-16.04"
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 2
+  end
   config.vm.define "master", primary: true  do |master|
     master.vm.network "private_network", ip: "10.1.0.4"
     master.vm.hostname = "master"
