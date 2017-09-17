@@ -34,7 +34,9 @@ docker run hello-world
 
 ## Without Vagrant
 
-Install a Ubuntu 16.04 VM using your preferred mechanism.
+Install two Ubuntu 16.04 VMs using your preferred mechanism.
+
+Then follow instructions below for each VM.
 
 Video:
 
