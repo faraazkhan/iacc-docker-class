@@ -13,7 +13,7 @@
 
 Video:
 
-[![asciicast](https://asciinema.org/a/o3TGQ8U09nv5NnwhWp5WkLGxc.png)](https://asciinema.org/a/o3TGQ8U09nv5NnwhWp5WkLGxc)
+[![asciicast](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC.png)](https://asciinema.org/a/4wL2mMh22qSWsHPsDdBZAopkC)
 
 * Clone this project: `git clone
   git@github.com:faraazkhan/iacc-docker-class.git`
@@ -25,11 +25,18 @@ vagrant up
 
 ### Verification
 
-SSH into the vagrant box and verify docker engine is available
+SSH into each vagrant box and verify docker engine is available
 
 ```
-vagrant ssh
+vagrant ssh master
 docker run hello-world
+exit
+```
+
+```
+vagrant ssh node0
+docker run hello-world
+exit
 ```
 
 ## Without Vagrant
