@@ -61,9 +61,14 @@ Log out of the VM, and log back in, then verify your installation with:
 
 `docker run hello-world`
 
-# Update
-If you have run a previous version of this repo and would like to
-upgrade (including getting latest from the repo), simply run:
+# Update / Recreate
+
+_***The instructions below will delete anything deployed to the K8S
+cluster and also any data you have on the virual machines__***
+
+_If you have run a previous version of this repo and would like to
+upgrade (including getting latest from the repo), or just want to
+recreate your vms from scratch simply run:
 
 ```
 cd iacc-docker-class
