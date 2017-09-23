@@ -40,8 +40,8 @@ EOF
 if [[ "$HOSTNAME" == "master" ]]; then
   init_cluster
   kubectl taint nodes --all node-role.kubernetes.io/master-
+  export kubever=$(kubectl version | base64 | tr -d '\n')
   kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-  kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
 else
   kubeadm join --token ${TOKEN} ${MASTER_IP}:${KUBE_API_PORT}
   id -u vagrant
