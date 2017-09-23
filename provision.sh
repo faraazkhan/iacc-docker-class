@@ -7,4 +7,4 @@ id -u $DOCKER_USER
 if [[ $?==0 ]]; then
   usermod -aG docker $DOCKER_USER
 fi
-# . /vagrant/kubernetes.sh # Uncomment this line to create the kubernetes cluster
+ . /vagrant/kubernetes.sh # Uncomment this line to create the kubernetes cluster
