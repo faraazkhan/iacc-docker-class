@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: studentbook-service
+  name: studentbook
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: studentbook-service
+    spec:
+      containers:
+        image: faraazkhan/iacc-demo-app
+        imagePullPolicy: IfNotPresent
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        name: studentbook
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+      restartPolicy: Always

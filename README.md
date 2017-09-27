@@ -90,6 +90,27 @@ export KUBECONFIG=kubeconfig
 kubectl get no
 ```
 
+### Demo Application
+
+This repo includes a simple Ruby on Rails application with appropriate
+Dockerfile, docker-compose.yaml (for local runs) and kubernetes
+manifests.
+
+To run the application locally using docker-compose, simply run:
+
+```
+docker-compose up -d # This starts the application and its dependencies
+in the background
+```
+
+The deploy the application to your Kubernetes cluster (with all
+dependencies), simply run:
+
+```
+kubectl apply -f deploy/
+```
+
+
 ## Without Vagrant
 
 Install two Ubuntu 16.04 VMs using your preferred mechanism.
