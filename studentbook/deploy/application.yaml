@@ -1,8 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: studentbook
+spec:
+  ports:
+  - port: 8000
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: studentbook
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    service: studentbook-service
+    app: studentbook
   name: studentbook
   namespace: default
 spec:
@@ -10,11 +24,25 @@ spec:
   template:
     metadata:
       labels:
-        service: studentbook-service
+        app: studentbook
     spec:
+      initContainers:
+      - image: faraazkhan/iacc-demo-app
+        name: studentbook-migrations
+        command: ['sh', '-c', 'bundle exec rake db:migrate']
+        env:
+        - name: DATABASE_URL
+          value: "mysql2://mysql.default.svc.cluster.local:3306/student_development"
+        - name: REDIS_URL
+          value: "redis://redis.default.svc.cluster.local:6379/0"
       containers:
-        image: faraazkhan/iacc-demo-app
-        imagePullPolicy: IfNotPresent
+      - image: faraazkhan/iacc-demo-app
+        name: studentbook
+        env:
+        - name: DATABASE_URL
+          value: "mysql2://mysql.default.svc.cluster.local:3306/student_development"
+        - name: REDIS_URL
+          value: "redis://redis.default.svc.cluster.local:6379/0"
         readinessProbe:
           failureThreshold: 3
           httpGet:

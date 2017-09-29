@@ -46,6 +46,7 @@ if [[ "$HOSTNAME" == "master" ]]; then
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/standalone/heapster-controller.yaml
   kubectl apply -f admin-sa.yaml
+  kubectl get secret dashboard-sa-token-tsvnx -n kube-system -o jsonpath='{.data.token}' | base64 --decode > dashboard-token.txt
 else
   kubeadm join --token ${TOKEN} ${MASTER_IP}:${KUBE_API_PORT}
   id -u vagrant
