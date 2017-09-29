@@ -10,7 +10,7 @@ cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get update
-apt-get install -y kubelet kubeadm
+apt-get install -y kubelet=1.7.5-00 kubeadm=1.7.5-00
 
 function init_cluster() {
   cat > /tmp/master.yaml <<EOF
