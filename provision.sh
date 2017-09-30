@@ -41,6 +41,7 @@ if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
   chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}/.kube
   cd ${SHARED_DIR}
   kubectl taint nodes --all node-role.kubernetes.io/master-
+  kubectl replace -f kube-proxy.yaml
   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/rbac/heapster-rbac.yaml
@@ -49,6 +50,8 @@ if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
   secret=$(kubectl get sa -n kube-system dashboard-sa -o jsonpath='{.secrets[0].name}')
   kubectl get secret $secret -n kube-system -o jsonpath='{.data.token}' | base64 --decode > dashboard-token.txt
   kubectl apply -f studentbook/deploy
+  kubectl delete po -n kube-system -l k8s-app=kube-proxy
+  kubectl delete po -n kube-system -l name=weave-net
 else # Set up Node
   kubeadm join --token ${TOKEN} ${MASTER_IP}:6443
   mkdir -p /home/${DEFAULT_USER}/.kube
