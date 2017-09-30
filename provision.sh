@@ -30,16 +30,15 @@ sed -e '/^.*ubuntu-xenial.*/d' -i /etc/hosts
 sed -i -e 's/AUTHZ_ARGS=.*/AUTHZ_ARGS="/' /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
 systemctl daemon-reload
+cd ${SHARED_DIR}
 
 if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
   kubeadm init --apiserver-advertise-address=${ADDRESS} --token=${TOKEN} --token-ttl=0
-  sleep 90
   mkdir -p /home/${DEFAULT_USER}/.kube /root/.kube
   cp /etc/kubernetes/admin.conf /home/${DEFAULT_USER}/.kube/config # Set up default kubeconfig
   cp /etc/kubernetes/admin.conf ${SHARED_DIR}/kubeconfig # Copy kubeconfig to host
   cp /etc/kubernetes/admin.conf /root/.kube/config
   chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}/.kube
-  cd ${SHARED_DIR}
   kubectl taint nodes --all node-role.kubernetes.io/master-
   kubectl replace -f kube-proxy.yaml
   kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
