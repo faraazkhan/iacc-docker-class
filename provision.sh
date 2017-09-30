@@ -33,6 +33,9 @@ systemctl daemon-reload
 cd ${SHARED_DIR}
 
 if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
+  rm -f dashboard-token
+  rm -f kubeconfig
+  pip install docker-compose
   kubeadm init --apiserver-advertise-address=${ADDRESS} --token=${TOKEN} --token-ttl=0
   mkdir -p /home/${DEFAULT_USER}/.kube /root/.kube
   cp /etc/kubernetes/admin.conf /home/${DEFAULT_USER}/.kube/config # Set up default kubeconfig
@@ -47,7 +50,7 @@ if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
   kubectl apply -f https://raw.githubusercontent.com/kubernetes/heapster/master/deploy/kube-config/standalone/heapster-controller.yaml
   kubectl apply -f admin-sa.yaml
   secret=$(kubectl get sa -n kube-system dashboard-sa -o jsonpath='{.secrets[0].name}')
-  kubectl get secret $secret -n kube-system -o jsonpath='{.data.token}' | base64 --decode > dashboard-token.txt
+  kubectl get secret $secret -n kube-system -o jsonpath='{.data.token}' | base64 --decode > dashboard-token
   kubectl apply -f studentbook/deploy
   kubectl delete po -n kube-system -l k8s-app=kube-proxy
   kubectl delete po -n kube-system -l name=weave-net

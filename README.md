@@ -8,6 +8,7 @@
 * Ensure Vagrant is installed and correctly configured: https://www.vagrantup.com/downloads.html
 * Ensure Vagrant vb-guest plugin is installed: `vagrant plugin install
   vagrant-vbguest`
+* Ensure latest kubectl is installed on your host: https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl
 
 ### Instructions
 
@@ -110,6 +111,35 @@ dependencies), simply run:
 kubectl apply -f deploy/
 ```
 
+To access the application, start kubectl proxy like this:
+in your browser:
+
+```
+kubectl proxy &
+```
+and visit the URL below:
+
+http://localhost:8001/api/v1/namespaces/default/services/studentbook:http/proxy/
+
+### Kubernetes Dashboard
+
+The kubernetes dashboard is always deployed automatically in this set
+up. You can access the cluster using kubectl proxy. An admin service
+account is created for you, giving you full access to the cluster via
+the dashboard. The token for the admin sa will be available in a file
+called: `dashboard-token`. To access the dashboard start kubectl proxy,
+if it isn't already running, like this:
+
+```
+kubectl proxy &
+```
+
+Then visit this URL in your browser:
+
+http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
+When prompted to log in, select the `Token` option and enter the token
+in the `dashboard-token` file.
 
 ## Without Vagrant
 
