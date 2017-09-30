@@ -1,0 +1,44 @@
+# OS Dependencies
+
+Requires ruby-2.4, nodejs, git, gcc, bundler and build-essential installed on the OS.
+
+# Application Dependencies
+
+All gems are listed in Gemfile, to install please run:
+
+bundle install
+
+# Data Store
+
+Uses a mysql / mariadb backend, version >= 5.5
+
+# Caching
+
+Uses a redis cache store
+
+# Configuration
+
+The following environment variables must be set for the application to run:
+
+* DATABASE_URL. Example: DATABASE_URL=mysql2://root@localhost/studentbook
+
+* REDIS_URL. Example: REDIS_URL=redis://localhost:6379/0
+
+
+# Operations
+
+To set up database run:
+
+bundle exec rake db:create # Creates the Database
+bundle exec rake db:migrate # Runs database migrations
+
+To start the application run:
+
+bundle exec rails s
+
+To run tests:
+
+bundle exec rake
+
+
+

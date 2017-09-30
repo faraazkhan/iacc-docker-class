@@ -1,3 +1,4 @@
 kubeconfig
 .vagrant/
 dashboard-token.txt
+*.log
