@@ -1,4 +1,4 @@
 kubeconfig
 .vagrant/
-dashboard-token.txt
+dashboard-token*
 *.log
