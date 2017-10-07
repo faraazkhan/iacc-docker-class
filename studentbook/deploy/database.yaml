@@ -31,7 +31,7 @@ spec:
         - name: MYSQL_ALLOW_EMPTY_PASSWORD
           value: "true"
         - name: MYSQL_DATABASE
-          value: student_development
+          value: studentbook_development
         ports:
         - containerPort: 3306
           name: mysql

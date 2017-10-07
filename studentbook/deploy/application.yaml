@@ -31,18 +31,34 @@ spec:
         name: studentbook-migrations
         command: ['sh', '-c', 'bundle exec rake db:migrate']
         env:
-        - name: DATABASE_URL
-          value: "mysql2://mysql.default.svc.cluster.local:3306/student_development"
-        - name: REDIS_URL
-          value: "redis://redis.default.svc.cluster.local:6379/0"
+          - name: MYSQL_HOST
+            value: "mysql.default.svc.cluster.local"
+          - name: MYSQL_USERNAME
+            value: "root"
+          - name: MYSQL_PASSWORD
+            value: ''
+          - name: MYSQL_DATABASE
+            value: studentbook_development
+          - name: REDIS_HOST
+            value: "redis.default.svc.cluster.local"
+          - name: REDIS_PASSWORD
+            value: ''
       containers:
       - image: faraazkhan/iacc-demo-app
         name: studentbook
         env:
-        - name: DATABASE_URL
-          value: "mysql2://mysql.default.svc.cluster.local:3306/student_development"
-        - name: REDIS_URL
-          value: "redis://redis.default.svc.cluster.local:6379/0"
+        - name: MYSQL_HOST
+          value: "mysql.default.svc.cluster.local:3306"
+        - name: MYSQL_USERNAME
+          value: "root"
+        - name: MYSQL_PASSWORD
+          value: ''
+        - name: MYSQL_DATABASE
+          value: studentbook_development
+        - name: REDIS_HOST
+          value: "redis.default.svc.cluster.local:6379"
+        - name: REDIS_PASSWORD
+          value: ''
         readinessProbe:
           failureThreshold: 3
           httpGet:
