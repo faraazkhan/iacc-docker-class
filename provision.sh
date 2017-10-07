@@ -5,6 +5,7 @@ ADDRESS="$(ip -4 addr show enp0s8 | grep "inet" | head -1 |awk '{print $2}' | cu
 MASTER_IP="10.1.0.4"
 DEFAULT_USER=ubuntu
 SHARED_DIR=/vagrant
+MASTER_HOSTNAME=master
 
 apt-get update
 apt-get install -y apt-transport-https ca-certificates
@@ -34,7 +35,7 @@ cd ${SHARED_DIR}
 kubeadm reset #https://github.com/kubernetes/kubeadm/issues/262
 curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash # install helm, yes curl bash ;p
 
-if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
+if [[ "$HOSTNAME" == "$MASTER_HOSTNAME" ]]; then # Set up Master
   rm -f dashboard-token
   rm -f kubeconfig
   pip install docker-compose

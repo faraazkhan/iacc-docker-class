@@ -153,10 +153,29 @@ Video:
 
 SSH into the VM (ensure you have root/sudo access).
 
-Then run
+Then download the provision script as follows:
 
 ```
-curl https://raw.githubusercontent.com/faraazkhan/iacc-docker-class/master/provision.sh | sudo bash
+curl https://raw.githubusercontent.com/faraazkhan/iacc-docker-class/master/provision.sh > provision.sh
+```
+
+Then modify the environment variables on top of the script
+
+```
+TOKEN # The Kubeadm token, does not need to be modified
+ADDRESS # Dynamically populated, no need to modify
+MASTER_IP # Set this to the IP of your master node
+DEFAULT_USER # The default user for your virtual machine (example:
+ubuntu, vagrant)
+SHARED_DIR # The directory set up as shared dir between your VM and host
+MASTER_HOSTNAME # The hostname of your master node
+```
+
+Once you have made the appropriate modifications, you can run the script
+as follows:
+
+```
+sudo bash provision.sh
 ```
 
 Log out of the VM, and log back in, then verify your installation with:
