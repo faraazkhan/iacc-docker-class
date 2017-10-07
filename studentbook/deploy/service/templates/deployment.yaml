@@ -24,7 +24,6 @@ spec:
           - {{ . | quote }}
           {{- end }}
         env:
-        - name: RELEASE_NAMESPACE
         - name: MYSQL_HOST
           value: "{{ .Release.Name }}-mysql.{{ .Release.Namespace }}.svc.cluster.local"
         - name: MYSQL_USERNAME
