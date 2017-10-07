@@ -1,0 +1,21 @@
+---
+replicaCount: 1
+image:
+  repository: faraazkhan/iacc-demo-app
+  tag: latest
+  pullPolicy: Always
+service:
+  name: studentbook
+  type: ClusterIP
+  externalPort: 8000
+  internalPort: 3000
+initContainer:
+  command: ['sh', '-c', 'bundle exec rake db:migrate']
+resources: {}
+mysql:
+  mysqlDatabase: studentbook_development
+  persistence:
+    enabled: false
+redis:
+  persistence:
+    enabled: false

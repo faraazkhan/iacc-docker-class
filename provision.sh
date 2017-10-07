@@ -31,6 +31,8 @@ sed -i -e 's/AUTHZ_ARGS=.*/AUTHZ_ARGS="/' /etc/systemd/system/kubelet.service.d/
 
 systemctl daemon-reload
 cd ${SHARED_DIR}
+kubeadm reset #https://github.com/kubernetes/kubeadm/issues/262
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash # install helm, yes curl bash ;p
 
 if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
   rm -f dashboard-token
@@ -54,6 +56,10 @@ if [[ "$HOSTNAME" == "master" ]]; then # Set up Master
   kubectl apply -f studentbook/deploy
   kubectl delete po -n kube-system -l k8s-app=kube-proxy
   kubectl delete po -n kube-system -l name=weave-net
+  helm init
+  kubectl create serviceaccount --namespace kube-system tiller
+  kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+  kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 else # Set up Node
   kubeadm join --token ${TOKEN} ${MASTER_IP}:6443
   mkdir -p /home/${DEFAULT_USER}/.kube

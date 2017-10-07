@@ -1,0 +1,84 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      initContainers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: "{{ .Chart.Name }}-migrations"
+        command:
+          {{- range .Values.initContainer.command}}
+          - {{ . | quote }}
+          {{- end }}
+        env:
+        - name: RELEASE_NAMESPACE
+        - name: MYSQL_HOST
+          value: "{{ .Release.Name }}-mysql.{{ .Release.Namespace }}.svc.cluster.local"
+        - name: MYSQL_USERNAME
+          value: "root"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: studentbook-mysql
+              key: mysql-root-password
+        - name: MYSQL_DATABASE
+          value: "{{ .Values.mysql.mysqlDatabase }}"
+        - name: REDIS_HOST
+          value: "{{ .Release.Name }}-redis.{{ .Release.Namespace }}.svc.cluster.local"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: studentbook-redis
+              key: redis-password
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: MYSQL_HOST
+            value: "{{ .Release.Name }}-mysql.{{ .Release.Namespace }}.svc.cluster.local"
+          - name: MYSQL_USERNAME
+            value: "root"
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: studentbook-mysql
+                key: mysql-root-password
+          - name: MYSQL_DATABASE
+            value: "{{ .Values.mysql.mysqlDatabase }}"
+          - name: REDIS_HOST
+            value: "{{ .Release.Name }}-redis.{{ .Release.Namespace }}.svc.cluster.local"
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: studentbook-redis
+                key: redis-password
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.service.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.service.internalPort }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
